@@ -31,10 +31,7 @@ class Stack:
         return 1 if self.size == 0 else 0
     
     def top(self) -> int:
-        if self.size == 0:
-            return -1
-        else:
-            return self.last.item
+        return -1 if self.size == 0 else self.last.item
     
 n = int(sys.stdin.readline())
 stack = Stack()
