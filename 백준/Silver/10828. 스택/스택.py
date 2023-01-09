@@ -1,28 +1,52 @@
 from __future__ import annotations
-from typing import List, Tuple, Union
 import sys
 
-def sol_10828(
-    inputs: List[str],
-    stack: List[int]
-) -> Tuple(Union(None, int), List[int]):
-    op = inputs[0]
-    if op == "push":
-        stack.append(int(inputs[1]))
-        return (None, stack)
-    elif op == "pop":
-        return (-1 if not stack else stack.pop(), stack)
-    elif op == "size":
-        return (len(stack), stack)
-    elif op == "empty":
-        return (1 if not stack else 0, stack)
-    elif op == "top":
-        return (-1 if not stack else stack[-1], stack)
+class Node:
+    def __init__(self, item: int, next: Node):
+        self.item = item
+        self.next = next
+
+class Stack:
+    def __init__(self):
+        self.last = None
+        self.size = 0
+        
+    def push(self, item: int):
+        self.last = Node(item, self.last)
+        self.size += 1
+        
+    def pop(self) -> int:
+        if self.size == 0:
+            return -1
+        else:
+            item = self.last.item
+            self.last = self.last.next
+            self.size -= 1
+            return item
+    
+    def _size(self) -> int:
+        return self.size
+    
+    def empty(self) -> int:
+        return 1 if self.size == 0 else 0
+    
+    def top(self) -> int:
+        if self.size == 0:
+            return -1
+        else:
+            return self.last.item
     
 n = int(sys.stdin.readline())
-stack = []
+stack = Stack()
 for i in range(n):
-    cmd = sys.stdin.readline().split()
-    output, stack = sol_10828(cmd, stack)
-    if output is not None:
-        print(output) 
+    inputs = sys.stdin.readline().split()
+    if inputs[0] == "push":
+        stack.push(int(inputs[1]))
+    elif inputs[0] == "pop":
+        print(stack.pop())
+    elif inputs[0] == "size":
+        print(stack._size())
+    elif inputs[0] == "empty":
+        print(stack.empty())
+    elif inputs[0] == "top":
+        print(stack.top())
