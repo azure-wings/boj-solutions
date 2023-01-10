@@ -1,7 +1,7 @@
 from typing import List
 import sys
 
-def sol_10950(nums: List[List[int]]) -> List[int]:
+def sol_10952(nums: List[List[int]]) -> List[int]:
     return map(sum, nums)
 
 if __name__ == "__main__":
@@ -12,6 +12,6 @@ if __name__ == "__main__":
             nums.append(inputs)
         else:
             break
-    results = sol_10950(nums)
+    results = sol_10952(nums)
     for ret in results:
         print(ret)
