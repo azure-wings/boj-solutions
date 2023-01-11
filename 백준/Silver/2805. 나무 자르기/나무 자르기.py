@@ -1,20 +1,19 @@
-from typing import List
+from collections import Counter
 import sys
 sys.setrecursionlimit(10**5)
 
-def binary_search(lo: int, hi: int, m: int) -> int:
-    if lo > hi:
-        return hi
-    mid = (lo + hi) // 2
-    if sum([max(0, t-mid) for t in trees]) >= m:
-        return binary_search(mid+1, hi, m)
-    else:
-        return binary_search(lo, mid-1, m)
-
-def sol_1654(m: int, trees: List[int]) -> int:
-    return binary_search(0, max(trees), m)
+def sol_2805(m: int, trees: Counter) -> int:
+    lo, hi = 0, max(trees.items())[0]
+    while lo <= hi:
+        mid = (lo + hi)//2
+        total = sum([(t-mid)*i for t,i in trees.items() if t > mid])
+        if total >= m:
+            lo = mid + 1
+        elif total < m:
+            hi = mid - 1
+    return hi
 
 if __name__ == "__main__":
     _, m = map(int, sys.stdin.readline().split())
-    trees = list(map(int, sys.stdin.readline().split()))
-    print(sol_1654(m, trees))
+    trees = Counter(map(int, sys.stdin.readline().split()))
+    print(sol_2805(m, trees))
