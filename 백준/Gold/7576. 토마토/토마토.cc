@@ -69,7 +69,7 @@ main(void)
     int m, n;
 
     cin >> m >> n;
-    t.conditions = new int*[m * n];
+    t.conditions = new int*[n];
     t.height     = n;
     t.width      = m;
     for(int i = 0; i < n; i++)
