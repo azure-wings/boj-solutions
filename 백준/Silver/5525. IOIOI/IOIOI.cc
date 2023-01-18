@@ -1,5 +1,6 @@
+#include <cstdio>
+#include <cstring>
 #include <iostream>
-#include <string>
 
 using namespace std;
 
@@ -12,20 +13,22 @@ fast_io(void)
 }
 
 int
-count_query(string given, int n)
+count_query(char* given, int n)
 {
     int count = 0;
-    string query;
+    char query[2 * (n + 1)];
 
-    query = "I";
-    for(int i = 0; i < n; i++)
-        query += "OI";
-
-    for(int i = 0; i < given.size() - n; i++)
+    query[0] = 'I';
+    for(int i = 1; i <= n; i++)
     {
-        if(given.substr(i, 2 * n + 1) == query)
-            count++;
+        query[2 * i - 1] = 'O';
+        query[2 * i]     = 'I';
     }
+    query[2 * n + 1] = '\0';
+
+    while(given = strstr(given + 1, query))
+        count++;
+
     return count;
 }
 
@@ -35,12 +38,14 @@ main(void)
     fast_io();
 
     int n, m;
-    string given;
+    char* given;
 
     cin >> n;
     cin >> m;
+    given = new char[m + 1];
+
     cin.ignore();
-    getline(cin, given);
+    cin.getline(given, m + 1, '\n');
 
     cout << count_query(given, n) << "\n";
 
