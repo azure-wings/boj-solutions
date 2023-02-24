@@ -1,49 +1,59 @@
+#include <cstring>
+#include <functional>
 #include <iostream>
 #include <map>
 
 using namespace std;
+using ull = unsigned long long;
 
-map<long long, long long> d;
-const long long mod = 1000000007LL;
-
-long long
-fibo(long long n)
+void
+fast_io(void)
 {
-    if(n <= 0)
-        return 0;
-    else if(n == 1)
-        return 1;
-    else if(n == 2)
-        return 1;
-    else if(d.count(n) > 0)
-        return d[n];
-    else
-    {
-        if(n % 2 == 1)
-        {
-            long long m  = (n + 1) / 2;
-            long long t1 = fibo(m);
-            long long t2 = fibo(m - 1);
-            d[n]         = t1 * t1 + t2 * t2;
-            d[n] %= mod;
-            return d[n];
-        }
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+}
+
+ull
+fibonacci(ull x, ull r)
+{
+    map<ull, ull> memo = { { 0, 0 }, { 1, 1 }, { 2, 1 } };
+
+    function<ull(ull)> dOcgane = [&](ull n) -> ull {
+        if(memo.count(n) > 0)
+            return memo[n];
         else
         {
-            long long m  = n / 2;
-            long long t1 = fibo(m - 1);
-            long long t2 = fibo(m);
-            d[n]         = (2LL * t1 + t2) * t2;
-            d[n] %= mod;
-            return d[n];
+            ull k = (n % 2 == 0 ? n / 2 : (n + 1) / 2);
+            ull f_k_minus_1, f_k;
+            f_k_minus_1 = dOcgane(k - 1);
+            f_k         = dOcgane(k);
+            switch(n % 2)
+            {
+            case 0:
+                memo[n] = ((2ULL * f_k_minus_1 + f_k)) * f_k;
+                break;
+            case 1:
+                memo[n] = (f_k * f_k) + (f_k_minus_1 * f_k_minus_1);
+                break;
+            }
+
+            memo[n] %= r;
+            return memo[n];
         }
-    }
+    };
+
+    return dOcgane(x);
 }
+
 int
 main()
 {
-    long long n;
+    fast_io();
+
+    ull n;
     cin >> n;
-    cout << fibo(n) << '\n';
+    cout << fibonacci(n, 1000000007ULL) << '\n';
+
     return 0;
 }
